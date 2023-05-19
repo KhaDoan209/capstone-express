@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model nguoi_dung {
+  id_nguoi_dung Int         @id @default(autoincrement())
+  email         String?     @db.VarChar(150)
+  mat_khau      String?     @db.VarChar(150)
+  ho_ten        String?     @db.VarChar(100)
+  tuoi          Int?
+  avatar        String?     @db.VarChar(255)
+  binh_luan     binh_luan[]
+  hinh_anh      hinh_anh[]
+  luu_anh       luu_anh[]
+}
+
+model binh_luan {
+  id_binh_luan   Int         @id @default(autoincrement())
+  id_nguoi_dung  Int?
+  id_hinh        Int?
+  ngay_binh_luan DateTime?   @db.Date
+  noi_dung       String?     @db.Text
+  nguoi_dung     nguoi_dung? @relation(fields: [id_nguoi_dung], references: [id_nguoi_dung], onDelete: NoAction, onUpdate: NoAction, map: "binh_luan_ibfk_1")
+  hinh_anh       hinh_anh?   @relation(fields: [id_hinh], references: [id_hinh], onDelete: NoAction, onUpdate: NoAction, map: "binh_luan_ibfk_2")
+
+  @@index([id_hinh], map: "id_hinh")
+  @@index([id_nguoi_dung], map: "id_nguoi_dung")
+}
+
+model hinh_anh {
+  id_hinh       Int         @id @default(autoincrement())
+  ten_hinh      String?     @db.VarChar(255)
+  duong_dan     String?     @db.Text
+  mo_ta         String?     @db.Text
+  id_nguoi_dung Int?
+  binh_luan     binh_luan[]
+  nguoi_dung    nguoi_dung? @relation(fields: [id_nguoi_dung], references: [id_nguoi_dung], onDelete: NoAction, onUpdate: NoAction, map: "hinh_anh_ibfk_1")
+  luu_anh       luu_anh[]
+
+  @@index([id_nguoi_dung], map: "id_nguoi_dung")
+}
+
+model luu_anh {
+  id_nguoi_dung Int
+  id_hinh       Int
+  ngay_luu      DateTime?  @db.Date
+  nguoi_dung    nguoi_dung @relation(fields: [id_nguoi_dung], references: [id_nguoi_dung], onDelete: NoAction, onUpdate: NoAction, map: "luu_anh_ibfk_1")
+  hinh_anh      hinh_anh   @relation(fields: [id_hinh], references: [id_hinh], onDelete: NoAction, onUpdate: NoAction, map: "luu_anh_ibfk_2")
+
+  @@id([id_nguoi_dung, id_hinh])
+  @@index([id_hinh], map: "id_hinh")
+}
