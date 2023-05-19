@@ -1,0 +1,461 @@
+{
+	"info": {
+		"_postman_id": "7c632684-0cef-489f-abd8-8c2c321a525c",
+		"name": "Capstone Express",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24578953"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get list user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkX25ndW9pX2R1bmciOjEsImVtYWlsIjoia2hhQGdtYWlsLmNvbSIsIm1hdF9raGF1IjoiJDJiJDEwJFdKNGRjMm40V1dOdzEudlM2YW0wbU8uOGVlM1JzaE56YzhLLzY1a0tHWXVkc1d1VmpyY2tLIiwiaG9fdGVuIjoiRG9hbiBUcmFuIFZpbmggS2hhIiwidHVvaSI6MjAsImF2YXRhciI6bnVsbH0sImlhdCI6MTY4NDM0NDg2MCwiZXhwIjoxNjg0MzQ1MTYwfQ.ksgcX_itJQ4rG4h9N_uTfJOoFJRS8Tss4REjzarZiA0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkX25ndW9pX2R1bmciOjUsImVtYWlsIjoia2hhQGdtYWlsLmNvbSIsIm1hdF9raGF1IjoiJDJiJDEwJFdKNGRjMm40V1dOdzEudlM2YW0wbU8uOGVlM1JzaE56YzhLLzY1a0tHWXVkc1d1VmpyY2tLIiwiaG9fdGVuIjoiRG9hbiBUcmFuIFZpbmggS2hhIiwidHVvaSI6MjAsImF2YXRhciI6bnVsbH0sImlhdCI6MTY4NDMwMDU3MSwiZXhwIjoxNjg0MzAwODcxfQ._XOpPxgzz6QJeMi9koK2jgpVOPVl6Xnkgt0i9OjIC7I",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}user/get-list-user",
+							"host": [
+								"{{domain}}user"
+							],
+							"path": [
+								"get-list-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}user/get-user-detail/3",
+							"host": [
+								"{{domain}}user"
+							],
+							"path": [
+								"get-user-detail",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user information",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\" doanvinhkha@gmail.com\",         \r\n  \"mat_khau\":\"1234\",     \r\n  \"ho_ten\":\"Doan Tran Vinh Kha\",        \r\n  \"tuoi\":20,        \r\n  \"avatar\":null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}user/update-user-information/1",
+							"host": [
+								"{{domain}}user"
+							],
+							"path": [
+								"update-user-information",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}user/delete-user/4",
+							"host": [
+								"{{domain}}user"
+							],
+							"path": [
+								"delete-user",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"khanh@gmail.com\",         \r\n  \"mat_khau\":\"1234\",     \r\n  \"ho_ten\":\"Doan Tran Vinh khanh\",        \r\n  \"tuoi\":25,        \r\n  \"avatar\":null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}auth/register",
+							"host": [
+								"{{domain}}auth"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"kha@gmail.com\",\r\n    \"mat_khau\":\"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}auth/login",
+							"host": [
+								"{{domain}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Images",
+			"item": [
+				{
+					"name": "Get list image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}images/get-list-image",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"get-list-image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find image by name",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}images/find-image-by-name/bl",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"find-image-by-name",
+								"bl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get image detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}images/get-image-detail/1",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"get-image-detail",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comment by image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}images/get-comment-by-image/1",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"get-comment-by-image",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check saved image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}images/check-stored-image/?userId=1&imgId=1",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"check-stored-image",
+								""
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								},
+								{
+									"key": "imgId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}images/save-image/?userId=1&imgId=1",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"save-image",
+								""
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								},
+								{
+									"key": "imgId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Image",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}images/delete-image/1",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"delete-image",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/Download/ironman.jpg"
+								},
+								{
+									"key": "mo_ta",
+									"value": "Nice image hehe",
+									"type": "text"
+								},
+								{
+									"key": "id_nguoi_dung",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}images/upload-image",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"upload-image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list posted image by user id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}images/get-list-image-by-user/1",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"get-list-image-by-user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list saved images by user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}images/get-saved-image-by-user/1",
+							"host": [
+								"{{domain}}images"
+							],
+							"path": [
+								"get-saved-image-by-user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create a new comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"id_nguoi_dung\":1,\r\n     \"id_hinh\":2,\r\n     \"noi_dung\":\"This image is about Tony\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}comments/create-comment",
+							"host": [
+								"{{domain}}comments"
+							],
+							"path": [
+								"create-comment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
