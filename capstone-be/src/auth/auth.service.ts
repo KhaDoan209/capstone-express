@@ -20,7 +20,7 @@ export class AuthService {
     })
     const isMatch = await bcrypt.compare(mat_khau, user.mat_khau);
     if (isMatch) {
-      let jwtToken = await this.jwtService.signAsync({ data: user }, { expiresIn: "5m", secret: this.configService.get("SECRET_KEY") })
+      let jwtToken = await this.jwtService.signAsync({ data: user }, { expiresIn: "10h", secret: this.configService.get("SECRET_KEY") })
       return jwtToken
     } else {
       return "Mật khẩu không chính xác"

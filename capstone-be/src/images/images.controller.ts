@@ -110,9 +110,11 @@ export class ImagesController {
   @UseInterceptors(FileInterceptor("file"))
   async uploadImage(@Body() body: UploadImageDto, @UploadedFile() file: Express.Multer.File) {
     try {
-      const imageUrl = await this.firebaseService.uploadImage(file)
-      let data = await this.imagesService.uploadImage(body, file.originalname, imageUrl)
-      return customDataResponse(data, HttpStatus.OK, data)
+
+      let { imgUrl, imgName } = await this.firebaseService.uploadImage(file);
+      let data = await this.imagesService.uploadImage(body, imgName, imgUrl)
+      return customDataResponse(undefined, HttpStatus.OK, data)
+
     } catch (error) {
       throw new HttpException("Backend Error", HttpStatus.INTERNAL_SERVER_ERROR)
     }
@@ -122,12 +124,9 @@ export class ImagesController {
   @Delete('/delete-image/:id')
   async deleteImageById(@Param('id') id: string) {
     try {
-      let data = await this.imagesService.deleteImageById(+id);
-      if (typeof data !== "string") {
-        return customDataResponse(data, HttpStatus.OK, "Delete image successfully")
-      } else {
-        return customDataResponse(undefined, HttpStatus.NOT_FOUND, data)
-      }
+      let imgName = await this.imagesService.deleteImageById(+id);
+      await this.firebaseService.deleteImage(`${imgName}`)
+      return customDataResponse(undefined, HttpStatus.OK, "Delete image successfully")
     } catch (error) {
       throw new HttpException("Backend Error", HttpStatus.INTERNAL_SERVER_ERROR)
     }

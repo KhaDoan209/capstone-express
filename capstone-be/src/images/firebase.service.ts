@@ -13,23 +13,38 @@ export class FirebaseService {
       this.storage = admin.storage();
    }
 
-   async uploadImage(file: Express.Multer.File): Promise<string> {
+   async uploadImage(file: Express.Multer.File): Promise<any> {
       const bucket = this.storage.bucket();
       const filename = `${Date.now().toString()}_${file.originalname}`;
-      const fileRef = bucket.file(filename);
+      const fileUrl = bucket.file(filename);
       const options = {
-         destination: fileRef,
+         destination: fileUrl,
          metadata: {
             contentType: file.mimetype,
          },
       };
-      await fileRef.save(file.buffer, options);
+      await fileUrl.save(file.buffer, options);
 
-      const downloadUrl = await fileRef.getSignedUrl({
+      const downloadUrl = await fileUrl.getSignedUrl({
          action: 'read',
          expires: '03-01-2500',
       });
 
-      return downloadUrl[0];
+      let returnedInformation = {
+         imgUrl: downloadUrl[0],
+         imgName: filename
+      }
+
+      return returnedInformation
+   }
+
+   async deleteImage(imagePath: string): Promise<any> {
+      const bucket = admin.storage().bucket();
+      const file = bucket.file(imagePath);
+      const exists = await file.exists();
+      if (!exists[0]) {
+         throw new Error('File not found.');
+      }
+      await file.delete()
    }
 }

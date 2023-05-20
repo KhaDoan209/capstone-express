@@ -152,7 +152,7 @@ export class ImagesService {
     let newImage = {
       id_nguoi_dung: Number(body.id_nguoi_dung),
       mo_ta: body.mo_ta,
-      ten_hinh: `${Date.now().toString()}_${imgName}`,
+      ten_hinh: imgName,
       duong_dan: imageUrl,
     }
     await this.prisma.hinh_anh.create({ data: newImage })
@@ -184,8 +184,7 @@ export class ImagesService {
           }
         })
       ]);
-      let data = this.getListImage()
-      return data
+      return imgToDelete.ten_hinh
     } else {
       return "Image not found"
     }
