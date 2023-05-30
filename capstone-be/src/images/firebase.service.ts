@@ -3,14 +3,21 @@ import { firebaseConfig } from 'src/utils/firebase.config';
 import * as admin from 'firebase-admin';
 
 @Injectable()
-export class FirebaseService {
+class FirebaseService {
    private storage: admin.storage.Storage
+   private static instance: FirebaseService;
    constructor() {
       admin.initializeApp({
          credential: admin.credential.cert(process.cwd() + "/serviceAccountKey.json"),
          storageBucket: firebaseConfig.storageBucket
       });
       this.storage = admin.storage();
+   }
+   public static getInstance(): FirebaseService {
+      if (!FirebaseService.instance) {
+         FirebaseService.instance = new FirebaseService();
+      }
+      return FirebaseService.instance;
    }
 
    async uploadImage(file: Express.Multer.File): Promise<any> {
@@ -48,3 +55,4 @@ export class FirebaseService {
       await file.delete()
    }
 }
+export const firebaseService = FirebaseService.getInstance()

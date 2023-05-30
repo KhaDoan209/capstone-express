@@ -7,7 +7,11 @@ export class ImagesService {
   private prisma = new PrismaClient()
 
   async getListImage() {
-    let data = await this.prisma.hinh_anh.findMany()
+    let data = await this.prisma.hinh_anh.findMany({
+      include: {
+        nguoi_dung: true
+      }
+    })
     return data;
   }
 
@@ -29,7 +33,8 @@ export class ImagesService {
           id_hinh: id,
         },
         include: {
-          nguoi_dung: true,
+          binh_luan: true,
+          nguoi_dung: true
         }
       }
     )
@@ -41,12 +46,12 @@ export class ImagesService {
   }
 
   async getCommentByImageId(id: number) {
-    let data = await this.prisma.hinh_anh.findFirst(
+    let data = await this.prisma.binh_luan.findMany(
       {
         where: {
-          id_hinh: id
+          id_hinh: id,
         }, include: {
-          binh_luan: true,
+          nguoi_dung: true,
         }
       }
     )
@@ -54,26 +59,27 @@ export class ImagesService {
   }
 
   async getImageListByUserId(id: number) {
-    let listImage = await this.prisma.nguoi_dung.findFirst({
+    let listImage = await this.prisma.hinh_anh.findMany({
       where: {
         id_nguoi_dung: id,
       }, include: {
-        hinh_anh: true
+        nguoi_dung: true
       }
     })
     return listImage
   }
 
   async getSavedImageByUser(id: number) {
-    let listSavedImages = await this.prisma.nguoi_dung.findFirst({
+    let listSavedImages = await this.prisma.luu_anh.findMany({
       where: {
         id_nguoi_dung: id,
-      }, include: {
+      },
+      include: {
         hinh_anh: {
           include: {
-            luu_anh: true,
-          },
-        },
+            nguoi_dung: true,
+          }
+        }
       }
     })
     return listSavedImages
@@ -154,6 +160,7 @@ export class ImagesService {
       mo_ta: body.mo_ta,
       ten_hinh: imgName,
       duong_dan: imageUrl,
+      tieu_de: body.tieu_de,
     }
     await this.prisma.hinh_anh.create({ data: newImage })
     return "Upload image successfully"

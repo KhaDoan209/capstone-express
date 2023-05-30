@@ -8,4 +8,5 @@ export class StoredImageDto {
 export class UploadImageDto {
    id_nguoi_dung: number;
    mo_ta: string;
+   tieu_de: string;
 }

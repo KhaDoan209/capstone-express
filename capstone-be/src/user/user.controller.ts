@@ -1,16 +1,19 @@
 import { Controller, Get, Put, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
-import { HttpCode, Res } from '@nestjs/common/decorators';
+import { HttpCode, Res, UploadedFile, UseInterceptors } from '@nestjs/common/decorators';
 import { Response } from 'express';
 import { nguoi_dung } from '@prisma/client';
 import { customDataResponse } from 'src/utils/custom-function';
 import { UseGuards } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { firebaseService } from 'src/images/firebase.service';
 
 @UseGuards(AuthGuard("jwt"))
 @Controller('/user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService
+  ) { }
 
   @Get("/get-list-user")
   @HttpCode(200)
@@ -45,23 +48,36 @@ export class UserController {
   }
 
 
-
   @Put('/update-user-information/:id')
-  async updateUserInformation(@Res() response: Response, @Body() updateUserDto: nguoi_dung,
-    @Param('id') id: string) {
+  @UseInterceptors(FileInterceptor("file"))
+  async updateUserInformation(@Res() response: Response, @Body() updateUserDto: nguoi_dung, @Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
     try {
-      let data = await this.userService.updateUserInformation(Number(id), updateUserDto)
-      if (typeof data !== "string") {
-        let responseData = customDataResponse(data, HttpStatus.OK, "User has been created")
-        response.send(responseData)
+      if (file === undefined) {
+        let data = await this.userService.updateUserInformation(Number(id), updateUserDto, null)
+        if (typeof data !== "string") {
+          let responseData = customDataResponse(data, HttpStatus.OK, "User has been created")
+          response.send(responseData)
+        } else {
+          let responseData = customDataResponse(null, HttpStatus.NOT_FOUND, data)
+          response.send(responseData)
+        }
       } else {
-        let responseData = customDataResponse(null, HttpStatus.NOT_FOUND, data)
-        response.send(responseData)
+        let { imgUrl, imgName } = await firebaseService.uploadImage(file);
+        let data = await this.userService.updateUserInformation(Number(id), updateUserDto, imgUrl)
+        if (typeof data !== "string") {
+          let responseData = customDataResponse(data, HttpStatus.OK, "User has been created")
+          response.send(responseData)
+        } else {
+          let responseData = customDataResponse(null, HttpStatus.NOT_FOUND, data)
+          response.send(responseData)
+        }
       }
     } catch (error) {
       throw new HttpException("Backend Error", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+
   @Delete('/delete-user/:id')
   async deleteUser(@Res() response: Response, @Param('id') id: string) {
     try {

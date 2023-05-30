@@ -7,18 +7,20 @@ import {
   customDataResponse
 } from 'src/utils/custom-function';
 import { JwtService } from '@nestjs/jwt';
+import { Public } from './public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService, private jwtService: JwtService) { }
 
   @Post("/login")
+  @Public()
   async login(@Body() userLoginDto: UserLoginDto, @Res() response: Response) {
     try {
       let data = await this.authService.login(userLoginDto)
       let decodedData = this.jwtService.decode(data)
       if (decodedData !== null) {
-        let responseData = customDataResponse(data, HttpStatus.OK, "Login successfully")
+        let responseData = customDataResponse({ decodedData, data }, HttpStatus.OK, "Login successfully")
         response.send(responseData)
       } else {
         let responseData = customDataResponse(null, HttpStatus.UNAUTHORIZED, data)
@@ -31,6 +33,7 @@ export class AuthController {
   }
 
   @Post('/register')
+  @Public()
   async register(@Res() response: Response, @Body() createUserDto: nguoi_dung) {
     try {
       let data = await this.authService.register(createUserDto);

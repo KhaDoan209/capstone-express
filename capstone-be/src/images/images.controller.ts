@@ -5,18 +5,19 @@ import {
   HttpException
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FirebaseService } from './firebase.service';
+import { firebaseService } from './firebase.service';
 import { UploadImageDto } from './dto/image.dto';
-import { UseGuards } from '@nestjs/common/decorators';
-import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(AuthGuard("jwt"))
+import { Public } from 'src/auth/public.decorator';
+
+
+// @UseGuards(AuthGuard)
 @Controller('images')
 export class ImagesController {
-  constructor(private readonly imagesService: ImagesService,
-    private readonly firebaseService: FirebaseService) { }
+  constructor(private readonly imagesService: ImagesService) { }
 
   @Get('/get-list-image')
+  @Public()
   async getListImage() {
     try {
       let data = await this.imagesService.getListImage();
@@ -53,7 +54,7 @@ export class ImagesController {
   @Get('/get-comment-by-image/:id')
   async getCommentByImageId(@Param('id') id: string) {
     try {
-      let data = this.imagesService.getCommentByImageId(+id)
+      let data = await this.imagesService.getCommentByImageId(+id)
       return customDataResponse(data, HttpStatus.OK, "Get comment successfully")
     } catch (error) {
       throw new HttpException("Backend Error", HttpStatus.INTERNAL_SERVER_ERROR)
@@ -111,7 +112,7 @@ export class ImagesController {
   async uploadImage(@Body() body: UploadImageDto, @UploadedFile() file: Express.Multer.File) {
     try {
 
-      let { imgUrl, imgName } = await this.firebaseService.uploadImage(file);
+      let { imgUrl, imgName } = await firebaseService.uploadImage(file);
       let data = await this.imagesService.uploadImage(body, imgName, imgUrl)
       return customDataResponse(undefined, HttpStatus.OK, data)
 
@@ -125,7 +126,7 @@ export class ImagesController {
   async deleteImageById(@Param('id') id: string) {
     try {
       let imgName = await this.imagesService.deleteImageById(+id);
-      await this.firebaseService.deleteImage(`${imgName}`)
+      await firebaseService.deleteImage(`${imgName}`)
       return customDataResponse(undefined, HttpStatus.OK, "Delete image successfully")
     } catch (error) {
       throw new HttpException("Backend Error", HttpStatus.INTERNAL_SERVER_ERROR)

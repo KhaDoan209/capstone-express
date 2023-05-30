@@ -13,7 +13,7 @@ model nguoi_dung {
   mat_khau      String?     @db.VarChar(150)
   ho_ten        String?     @db.VarChar(100)
   tuoi          Int?
-  avatar        String?     @db.VarChar(255)
+  avatar        String?     @db.Text
   binh_luan     binh_luan[]
   hinh_anh      hinh_anh[]
   luu_anh       luu_anh[]
@@ -38,6 +38,7 @@ model hinh_anh {
   duong_dan     String?     @db.Text
   mo_ta         String?     @db.Text
   id_nguoi_dung Int?
+  tieu_de       String?     @db.Text
   binh_luan     binh_luan[]
   nguoi_dung    nguoi_dung? @relation(fields: [id_nguoi_dung], references: [id_nguoi_dung], onDelete: NoAction, onUpdate: NoAction, map: "hinh_anh_ibfk_1")
   luu_anh       luu_anh[]
