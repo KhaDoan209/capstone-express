@@ -27,21 +27,19 @@ export class UserService {
   }
 
   async updateUserInformation(id: number, updateUserDto: nguoi_dung, imgUrl: any) {
-    const { email, mat_khau, ho_ten, tuoi } = updateUserDto;
-
+    const { email, mat_khau, ho_ten, tuoi, avatar } = updateUserDto;
     let userExisted = await this.prisma.nguoi_dung.findFirst({
       where: {
         id_nguoi_dung: id,
       }
     })
-    let hashPassword = await bcrypt.hash(mat_khau, 10)
     let newUser = {
       email: email,
-      mat_khau: hashPassword,
       ho_ten: ho_ten,
       tuoi: Number(tuoi),
-      avatar: imgUrl
+      avatar: imgUrl === null ? avatar : imgUrl
     }
+    console.log(newUser);
     if (userExisted !== null) {
       let updateUser = await this.prisma.nguoi_dung.update({
         where: {

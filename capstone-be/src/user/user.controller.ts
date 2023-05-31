@@ -55,7 +55,7 @@ export class UserController {
       if (file === undefined) {
         let data = await this.userService.updateUserInformation(Number(id), updateUserDto, null)
         if (typeof data !== "string") {
-          let responseData = customDataResponse(data, HttpStatus.OK, "User has been created")
+          let responseData = customDataResponse(data, HttpStatus.OK, "User has been updated")
           response.send(responseData)
         } else {
           let responseData = customDataResponse(null, HttpStatus.NOT_FOUND, data)
@@ -63,14 +63,16 @@ export class UserController {
         }
       } else {
         let { imgUrl, imgName } = await firebaseService.uploadImage(file);
+
         let data = await this.userService.updateUserInformation(Number(id), updateUserDto, imgUrl)
-        if (typeof data !== "string") {
-          let responseData = customDataResponse(data, HttpStatus.OK, "User has been created")
-          response.send(responseData)
-        } else {
-          let responseData = customDataResponse(null, HttpStatus.NOT_FOUND, data)
-          response.send(responseData)
-        }
+        response.send(data)
+        // if (typeof data !== "string") {
+        //   let responseData = customDataResponse(data, HttpStatus.OK, "User has been updated")
+        //   response.send(responseData)
+        // } else {
+        //   let responseData = customDataResponse(null, HttpStatus.NOT_FOUND, data)
+        //   response.send(responseData)
+        // }
       }
     } catch (error) {
       throw new HttpException("Backend Error", HttpStatus.INTERNAL_SERVER_ERROR)
